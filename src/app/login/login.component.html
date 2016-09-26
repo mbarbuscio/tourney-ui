@@ -1,0 +1,24 @@
+<h3>
+  Login
+</h3>
+<form (ngSubmit)="onSubmit()">
+  <div>
+    <label for="name">Name</label>
+    <input name="name" [(ngModel)]="user.name" required ngModel>
+  </div>
+  <div>
+    <label for="password">Password</label>
+    <input name="password" [(ngModel)]="user.password"  required>
+  </div>
+  <div>
+    <label for="house">House</label>
+    <input name="house" [(ngModel)]="user.house"  required>
+  </div>
+
+  <button type="submit">Login</button>
+  <hr>
+  
+  <div *ngIf="token">
+    {{ token }}
+  </div>
+</form>

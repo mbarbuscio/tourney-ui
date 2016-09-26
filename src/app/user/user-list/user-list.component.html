@@ -1,0 +1,13 @@
+<h3>
+  User Management
+</h3>
+
+<div>
+  <ul>
+    <li *ngFor="let user of users" (click)="selectUser(user)" [class.user]="user != selectedUser" [class.selectedUser]="user === selectedUser">
+      {{ user.name }}  
+    </li>
+  </ul>
+</div>
+
+<app-user-detail [user] = "selectedUser"></app-user-detail>
