@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthGuard } from './auth/authGuard';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Tourney at Harrenhal!';
+
+  constructor(private authGuard: AuthGuard) { 
+  }
+
+  logout() {
+    this.authGuard.token = null;
+    this.authGuard.redirectToLogin();
+  }
 }

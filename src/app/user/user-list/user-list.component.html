@@ -6,7 +6,7 @@
   <md-list class="app-list">
         <md-list-item *ngFor="let user of users">
           <div [class.user]="user != selectedUser" [class.selectedUser]="user === selectedUser">{{ user.name }}</div>
-          <div><i class="material-icons" (click)="selectUser(user)">mode_edit</i></div>
+          <div><i style="cursor: pointer;" class="material-icons" (click)="selectUser(user)">mode_edit</i></div>
         </md-list-item>
       </md-list>
 </div>

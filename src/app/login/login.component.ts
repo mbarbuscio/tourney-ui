@@ -1,35 +1,33 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from './service/login.service';
+import { AuthGuard } from '../auth/authGuard';
 import { User } from '../user/model/user';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-    providers: [LoginService]
+  providers: [LoginService]
 })
 export class LoginComponent implements OnInit {
 
-  user: User;
-  loginService: LoginService;
-  token: String;
-
-  constructor(loginSrvc: LoginService) { 
-    this.loginService = loginSrvc;
+  private user: User;
+  
+  constructor(private loginService: LoginService, private authGuard: AuthGuard) { 
   }
 
   ngOnInit() {
     this.user = new User();
   }
 
-  onSubmit() {
-    this.token = "";
+  login() {
     const login$ = this.loginService.authenticate(this.user.name, this.user.password);
     login$.subscribe(
-      token => this.token = token.replace("JWT: ", ""),
+      token => {
+        this.authGuard.successfulLogin(token);
+      },
       () => console.log("error occurred during authenticate"),
       () => console.log("authenticate() service call completed")
     );
   }
-
 }

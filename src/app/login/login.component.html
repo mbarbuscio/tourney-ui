@@ -1,21 +1,18 @@
 <h3>
   Login
 </h3>
-<form (ngSubmit)="onSubmit()">
+<form (ngSubmit)="login()">
   <div>
     <md-input placeholder="name" name="name" [(ngModel)]="user.name" required></md-input>
   </div>
   <div>
-    <md-input placeholder="password" name="password" [(ngModel)]="user.password" required></md-input>
-  </div>
-  <div>
-     <md-input placeholder="house" name="house" [(ngModel)]="user.house"  required></md-input>
+    <md-input type="password" placeholder="password" name="password" [(ngModel)]="user.password" required></md-input>
   </div>
 
   <button md-raised-button color="primary" type="submit">Login</button>
   <hr>
   
-  <div *ngIf="token">
-    {{ token }}
+  <div *ngIf="authGuard.token">
+    {{ authGuard.token }}
   </div>
 </form>

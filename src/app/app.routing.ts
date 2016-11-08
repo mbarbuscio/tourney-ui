@@ -1,14 +1,16 @@
 import { ModuleWithProviders }  from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, CanActivate } from '@angular/router';
 
 import { UserListComponent } from './user/user-list/user-list.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
+import { AuthGuard } from './auth/authGuard';
 
 const appRoutes: Routes = [
     {
         path: "",
-        component: DashboardComponent
+        component: DashboardComponent,
+        canActivate: [AuthGuard]
     },
     {
         path: "login",
@@ -16,11 +18,13 @@ const appRoutes: Routes = [
     },
     {
         path: "dashboard",
-        component: DashboardComponent
+        component: DashboardComponent,
+        canActivate: [AuthGuard]
     },
     {
         path: "users",
-        component: UserListComponent
+        component: UserListComponent,
+        canActivate: [AuthGuard]
     }
 ]
 

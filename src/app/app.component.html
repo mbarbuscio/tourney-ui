@@ -9,7 +9,7 @@
     <button md-menu-item routerLink="/login">Login</button>
     <button md-menu-item routerLink="/dashboard"> Dashboard </button>
     <button md-menu-item routerLink="/users"> Users </button>
-    <button md-menu-item disabled> Sign Out </button>
+    <button md-menu-item (click) ="logout()"> Sign Out </button>
   </md-menu>
 
   <router-outlet></router-outlet>
