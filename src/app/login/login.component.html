@@ -11,6 +11,10 @@
 
   <button md-raised-button color="primary" type="submit">Login</button>
   <hr>
+
+  <div *ngIf="errorMsg" class="login-error">
+    {{ errorMsg }}
+  </div>
   
   <div *ngIf="authGuard.token">
     {{ authGuard.token }}

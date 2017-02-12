@@ -1,44 +1,62 @@
 /* tslint:disable:no-unused-variable */
 
-import { TestBed, async } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { MaterialModule} from '@angular/material';
 import { AppComponent } from './app.component';
-import { UserService } from './user/service/user.service';
+import { AuthGuard } from './auth/authGuard';
 
-describe('App: TourneyUi', () => {
-  beforeEach(() => {
+describe('AppComponent', () => {
+
+  let fixture: ComponentFixture<AppComponent>;
+  let appComp: AppComponent;
+  let debugEl: DebugElement;
+  let authGuard: AuthGuard;
+
+  beforeEach(async(() => {
+    const AuthGuardStub = {
+      token: 'initialToken',
+      redirectToLogin: function() {
+        return "redirected to login";
+      }
+    }
 
     TestBed.configureTestingModule({
       declarations: [
-        AppComponent,
-      ], imports: [
-        FormsModule,
-        HttpModule
+        AppComponent
       ],
-      providers: [UserService],
+      providers: [
+        { provide: AuthGuard, useValue: AuthGuardStub }
+        ],
+      imports: [
+        MaterialModule.forRoot()
+      ],
       schemas: [NO_ERRORS_SCHEMA]
-    });
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges()
+    appComp = fixture.componentInstance;
+    debugEl = fixture.debugElement;
+    authGuard = debugEl.injector.get(AuthGuard);
   });
 
-  it('should create the app', async(() => {
-    let fixture = TestBed.createComponent(AppComponent);
-    let app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
-  }));
+  it('should create the app', () => {
+    expect(appComp).toBeTruthy();
+  });
+  
+  it('should have title Tourney at Harrenhal!', () => {
+    const de = debugEl.query(By.css('.header-title'));
+    expect(de.nativeElement.textContent).toContain('Tourney at Harrenhal!');
+  });
 
-  it(`should have as title 'Tourney at Harrenhal!'`, async(() => {
-    let fixture = TestBed.createComponent(AppComponent);
-    let app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('Tourney at Harrenhal!');
-  }));
-
-  it('should render title in a h1 tag', async(() => {
-    let fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    let compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Tourney at Harrenhal!');
-  }));
+  it('should redirect to login when logout is invoked', () => {
+    expect(authGuard.token).toContain('initialToken');
+    appComp.logout();
+    expect(authGuard.token).toBeNull;
+    expect(authGuard.redirectToLogin()).toContain('redirected to login');
+  });
 });

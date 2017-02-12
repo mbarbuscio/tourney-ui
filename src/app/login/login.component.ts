@@ -12,6 +12,7 @@ import { User } from '../user/model/user';
 export class LoginComponent implements OnInit {
 
   private user: User;
+  private errorMsg: String;
   
   constructor(private loginService: LoginService, private authGuard: AuthGuard) { 
   }
@@ -26,7 +27,7 @@ export class LoginComponent implements OnInit {
       token => {
         this.authGuard.successfulLogin(token);
       },
-      () => console.log("error occurred during authenticate"),
+      () => this.errorMsg = "error occurred during authentication",
       () => console.log("authenticate() service call completed")
     );
   }

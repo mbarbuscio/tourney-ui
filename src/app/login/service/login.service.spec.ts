@@ -18,3 +18,5 @@ describe('Service: User', () => {
     expect(service).toBeTruthy();
   }));
 });
+
+// https://blog.thoughtram.io/angular/2016/11/28/testing-services-with-http-in-angular-2.html

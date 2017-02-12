@@ -1,11 +1,11 @@
-import { browser, element, by } from 'protractor/globals';
+import { browser, element, by } from 'protractor';
 
 export class TourneyUiPage {
   navigateTo() {
     return browser.get('/');
   }
 
-  getParagraphText() {
-    return element(by.css('app-root h1')).getText();
+  getHeaderTitle() {
+    return element(by.css('.header-title')).getText();
   }
 }

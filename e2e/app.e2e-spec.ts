@@ -7,8 +7,8 @@ describe('tourney-ui App', function() {
     page = new TourneyUiPage();
   });
 
-  it('should display message saying app works', () => {
+  it('should display message saying Tourney at Harrenhal', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Tourney at Harrenhal!');
+    expect(page.getHeaderTitle()).toEqual('Tourney at Harrenhal!');
   });
 });
