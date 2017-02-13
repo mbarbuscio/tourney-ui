@@ -1,8 +1,9 @@
 /* tslint:disable:no-unused-variable */
 
 import { TestBed, async, inject } from '@angular/core/testing';
+import { HttpModule, Http, BaseRequestOptions, Response, ResponseOptions  } from '@angular/http';
+import { MockBackend } from '@angular/http/testing';
 import { LoginService } from './login.service';
-import { HttpModule } from '@angular/http';
 
 describe('Service: User', () => {
   beforeEach(() => {
@@ -10,13 +11,43 @@ describe('Service: User', () => {
       imports: [
         HttpModule
       ],
-      providers: [LoginService]
+        providers: [
+          LoginService,
+          {
+              provide: Http,
+              useFactory: (mockBackend, options) => {
+                  return new Http(mockBackend, options);
+              },
+              deps: [MockBackend, BaseRequestOptions]
+          },
+          MockBackend,
+          BaseRequestOptions
+        ]
     });
   });
 
-  it('should ...', inject([LoginService], (service: LoginService) => {
-    expect(service).toBeTruthy();
+  it('should inject the LoginSerivce', inject([LoginService], (loginService: LoginService) => {
+    expect(loginService).toBeTruthy();
   }));
-});
 
-// https://blog.thoughtram.io/angular/2016/11/28/testing-services-with-http-in-angular-2.html
+  it('should return a jwt token', inject([LoginService, MockBackend], (loginService: LoginService, mockBackend: MockBackend) => {
+
+    const mockResponse = 'JWT: someToken';
+    mockBackend.connections.subscribe(
+        (connection) => {
+            connection.mockRespond(new Response(new ResponseOptions(
+                { body: mockResponse }
+            )));
+        }
+    );
+
+    loginService.authenticate('Jon','I know nothing').subscribe(
+        token => {
+            expect(token).toContain('JWT: someToken');
+        },
+        () => console.log('error'),
+        () => console.log('done')
+    );
+  }));
+
+});
